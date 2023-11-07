@@ -9,12 +9,26 @@ import java.sql.Statement;
 
 public class ConnectionSQL {
                  //"jdbc:sqlserver://'servername';Database='databasename';properties..."
-    String URL = "jdbc:sqlserver://PC-ISAAC;Database=test0;IntegratedSecurity=true";
+    private static final String URL = "jdbc:sqlserver://PC-ISAAC;Database=test0;IntegratedSecurity=true";
     Connection conn = null;
     
-    public void getConnection() throws SQLException {
+    public void getConnection() throws SQLException, ClassNotFoundException {
+        
+        String hostName = "localhost"; //Server name
+        String sqlInstanceName = ""; //Server name
+        String sqlDatabase = "";
+        String sqlUser = "";
+        String sqlPass = "";
+        
+        // El puerto se puede ver en Sql Server Configuration Manager
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String URLsum = "jdbc:sqlserver://" + hostName + ":port_hare" + ";instance=" + sqlInstanceName + 
+                        ";databaseName=" + sqlDatabase;
+        
         try {
+            
             conn = DriverManager.getConnection(URL); 
+            //conn = DriverManager.getConnection(URLsum, sqlUser, sqlPass); //Alternative
             System.out.println("Connection established");
             Statement stmt = conn.createStatement();
             String query = "SELECT * FROM person";
